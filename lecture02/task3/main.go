@@ -2,25 +2,42 @@ package main
 
 import (
 	"fmt"
-	"golang_lectures/lecture02/task3/employees"
 )
 
+type Employee struct {
+	ID       int
+	Name     string
+	Position string
+	Salary   float64
+}
+
+func NewEmployee(id int, name, position string, salary float64) *Employee {
+	return &Employee{ID: id, Name: name, Position: position, Salary: salary}
+}
+
+func (e *Employee) PrintInfo() {
+	fmt.Printf("ID: %d\n", e.ID)
+	fmt.Printf("Name: %s\n", e.Name)
+	fmt.Printf("Job title: %s\n", e.Position)
+	fmt.Printf("Salary: %.2f\n", e.Salary)
+	fmt.Println("-----------------------")
+}
+
+func (e *Employee) CalculateBonus(percent float64) float64 {
+	return e.Salary * percent / 100
+}
+
 func main() {
-	manager := employees.Manager{
-		CommonFields: employees.CommonFields{Name: "Иван Петрович", Salary: 5000.0},
-		Department:   "Производство",
-	}
+	employee1 := NewEmployee(1, "Aizhan Tulendinova", "Manager", 5000.0)
+	employee2 := NewEmployee(2, "Nurbol Seitzhanov", "Developer", 3500.0)
+	employee3 := NewEmployee(3, "Madiyar Lashbayev", "Designer", 4000.0)
 
-	worker := employees.Worker{
-		CommonFields: employees.CommonFields{Name: "Анна Ивановна", Salary: 3000.0},
-		Worksite:     "Стройка",
-	}
+	employees := []*Employee{employee1, employee2, employee3}
 
-	employeeList := []employees.Employee{manager, worker}
-
-	for _, employee := range employeeList {
+	for _, employee := range employees {
 		employee.PrintInfo()
-		fmt.Println("Обязанности:", employee.Work())
+		bonus := employee.CalculateBonus(10.0)
+		fmt.Printf("Bonus: %.2f\n", bonus)
 		fmt.Println("-----------------------")
 	}
 }
