@@ -4,50 +4,47 @@ import (
 	"fmt"
 )
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
+// Employee - структура, представляющая сотрудника.
+type Employee struct {
+	ID       int
+	Name     string
+	Position string
+	Salary   float64
 }
 
-func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
-	dummy := &ListNode{}
-	current := dummy
+// NewEmployee - функция для создания нового сотрудника.
+func NewEmployee(id int, name, position string, salary float64) *Employee {
+	return &Employee{ID: id, Name: name, Position: position, Salary: salary}
+}
 
-	for list1 != nil && list2 != nil {
-		if list1.Val < list2.Val {
-			current.Next = list1
-			list1 = list1.Next
-		} else {
-			current.Next = list2
-			list2 = list2.Next
-		}
-		current = current.Next
-	}
+// PrintInfo - метод для вывода информации о сотруднике.
+func (e *Employee) PrintInfo() {
+	fmt.Printf("ID: %d\n", e.ID)
+	fmt.Printf("Имя: %s\n", e.Name)
+	fmt.Printf("Должность: %s\n", e.Position)
+	fmt.Printf("Зарплата: %.2f\n", e.Salary)
+	fmt.Println("-----------------------")
+}
 
-	if list1 != nil {
-		current.Next = list1
-	}
-
-	if list2 != nil {
-		current.Next = list2
-	}
-
-	return dummy.Next
+// CalculateBonus - метод для расчета бонуса сотрудника.
+func (e *Employee) CalculateBonus(percent float64) float64 {
+	return e.Salary * percent / 100
 }
 
 func main() {
-	list1 := &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 4}}}
-	list2 := &ListNode{Val: 1, Next: &ListNode{Val: 3, Next: &ListNode{Val: 4}}}
+	// Создаем несколько сотрудников.
+	employee1 := NewEmployee(1, "Иван Иванов", "Менеджер", 5000.0)
+	employee2 := NewEmployee(2, "Анна Петрова", "Разработчик", 3500.0)
+	employee3 := NewEmployee(3, "Петр Сидоров", "Дизайнер", 4000.0)
 
-	merged := mergeTwoLists(list1, list2)
-	printList(merged)
-}
+	// Список сотрудников.
+	employees := []*Employee{employee1, employee2, employee3}
 
-func printList(head *ListNode) {
-	current := head
-	for current != nil {
-		fmt.Printf("%d ", current.Val)
-		current = current.Next
+	// Вывод информации о каждом сотруднике и расчет бонуса.
+	for _, employee := range employees {
+		employee.PrintInfo()
+		bonus := employee.CalculateBonus(10.0)
+		fmt.Printf("Бонус: %.2f\n", bonus)
+		fmt.Println("-----------------------")
 	}
-	fmt.Println()
 }
